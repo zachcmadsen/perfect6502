@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-perfect6502-sys = "0.2"
+perfect6502-sys = "0.2.2"
