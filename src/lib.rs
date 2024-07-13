@@ -81,6 +81,10 @@ impl State {
         unsafe { perfect6502_sys::readIR(self.inner.as_ptr()) }
     }
 
+    pub fn memory(&self) -> &[u8] {
+        unsafe { &*ptr::addr_of!(perfect6502_sys::memory) }
+    }
+
     pub fn memory_mut(&mut self) -> &mut [u8] {
         unsafe { &mut *ptr::addr_of_mut!(perfect6502_sys::memory) }
     }
