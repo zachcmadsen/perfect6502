@@ -1,4 +1,6 @@
-use std::{
+#![no_std]
+
+use core::{
     ffi::c_void,
     sync::atomic::{AtomicBool, Ordering},
 };
