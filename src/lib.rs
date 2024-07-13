@@ -65,16 +65,16 @@ impl State {
         }
     }
 
-    pub fn read_addr_bus(&mut self) -> u16 {
+    pub fn address_bus(&mut self) -> u16 {
         unsafe { perfect6502_sys::readAddressBus(self.inner.as_ptr()) }
     }
 
-    pub fn write_data_bus(&mut self, data: u8) {
-        unsafe { perfect6502_sys::writeDataBus(self.inner.as_ptr(), data) };
+    pub fn data_bus(&mut self) -> u8 {
+        unsafe { perfect6502_sys::readDataBus(self.inner.as_ptr()) }
     }
 
-    pub fn read_data_bus(&mut self) -> u8 {
-        unsafe { perfect6502_sys::readDataBus(self.inner.as_ptr()) }
+    pub fn set_data_bus(&mut self, data: u8) {
+        unsafe { perfect6502_sys::writeDataBus(self.inner.as_ptr(), data) };
     }
 
     pub fn ir(&mut self) -> u8 {
