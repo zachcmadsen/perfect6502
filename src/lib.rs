@@ -33,28 +33,28 @@ impl State {
         unsafe { perfect6502_sys::step(self.inner.as_ptr()) };
     }
 
-    pub fn pc(&mut self) -> u8 {
-        unsafe { perfect6502_sys::readPC(self.inner.as_ptr()) as u8 }
+    pub fn pc(&mut self) -> u16 {
+        unsafe { perfect6502_sys::readPC(self.inner.as_ptr()) }
     }
 
     pub fn a(&mut self) -> u8 {
-        unsafe { perfect6502_sys::readA(self.inner.as_ptr()) as u8 }
+        unsafe { perfect6502_sys::readA(self.inner.as_ptr()) }
     }
 
     pub fn x(&mut self) -> u8 {
-        unsafe { perfect6502_sys::readX(self.inner.as_ptr()) as u8 }
+        unsafe { perfect6502_sys::readX(self.inner.as_ptr()) }
     }
 
     pub fn y(&mut self) -> u8 {
-        unsafe { perfect6502_sys::readY(self.inner.as_ptr()) as u8 }
+        unsafe { perfect6502_sys::readY(self.inner.as_ptr()) }
     }
 
     pub fn sp(&mut self) -> u8 {
-        unsafe { perfect6502_sys::readSP(self.inner.as_ptr()) as u8 }
+        unsafe { perfect6502_sys::readSP(self.inner.as_ptr()) }
     }
 
     pub fn p(&mut self) -> u8 {
-        unsafe { perfect6502_sys::readP(self.inner.as_ptr()) as u8 }
+        unsafe { perfect6502_sys::readP(self.inner.as_ptr()) }
     }
 
     pub fn rw(&mut self) -> Cycle {
