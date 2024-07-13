@@ -19,7 +19,7 @@ fn lda_imm() {
 
     state.step();
     state.step();
-    
+
     assert!(matches!(state.rw(), Cycle::Read));
 
     state.step();
