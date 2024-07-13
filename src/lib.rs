@@ -60,11 +60,11 @@ impl State {
         unsafe { perfect6502_sys::readDataBus(self.inner.as_ptr()) }
     }
 
-    pub fn read(&mut self, addr: u8) -> u8 {
+    pub fn read(&mut self, addr: u16) -> u8 {
         unsafe { perfect6502_sys::memory[addr as usize] }
     }
 
-    pub fn write(&mut self, addr: u8, data: u8) {
+    pub fn write(&mut self, addr: u16, data: u8) {
         unsafe { perfect6502_sys::memory[addr as usize] = data };
     }
 }
