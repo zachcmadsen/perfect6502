@@ -2,7 +2,7 @@
 
 use core::{
     ffi::c_void,
-    ptr::NonNull,
+    ptr::{self, NonNull},
     sync::atomic::{AtomicBool, Ordering},
 };
 
@@ -10,6 +10,11 @@ static EXISTS: AtomicBool = AtomicBool::new(false);
 
 pub struct State {
     inner: NonNull<c_void>,
+}
+
+pub enum Cycle {
+    Read,
+    Write,
 }
 
 impl State {
@@ -44,7 +49,7 @@ impl State {
         unsafe { perfect6502_sys::readY(self.inner.as_ptr()) as u8 }
     }
 
-    pub fn s(&mut self) -> u8 {
+    pub fn sp(&mut self) -> u8 {
         unsafe { perfect6502_sys::readSP(self.inner.as_ptr()) as u8 }
     }
 
@@ -52,20 +57,36 @@ impl State {
         unsafe { perfect6502_sys::readP(self.inner.as_ptr()) as u8 }
     }
 
+    pub fn rw(&mut self) -> Cycle {
+        let rw = unsafe { perfect6502_sys::readRW(self.inner.as_ptr()) };
+        match rw != 0 {
+            true => Cycle::Read,
+            false => Cycle::Write,
+        }
+    }
+
     pub fn read_addr_bus(&mut self) -> u16 {
         unsafe { perfect6502_sys::readAddressBus(self.inner.as_ptr()) }
+    }
+
+    pub fn write_data_bus(&mut self, data: u8) {
+        unsafe { perfect6502_sys::writeDataBus(self.inner.as_ptr(), data) };
     }
 
     pub fn read_data_bus(&mut self) -> u8 {
         unsafe { perfect6502_sys::readDataBus(self.inner.as_ptr()) }
     }
 
-    pub fn read(&mut self, addr: u16) -> u8 {
-        unsafe { perfect6502_sys::memory[addr as usize] }
+    pub fn ir(&mut self) -> u8 {
+        unsafe { perfect6502_sys::readIR(self.inner.as_ptr()) }
     }
 
-    pub fn write(&mut self, addr: u16, data: u8) {
-        unsafe { perfect6502_sys::memory[addr as usize] = data };
+    pub fn memory_mut(&mut self) -> &mut [u8] {
+        unsafe { &mut *ptr::addr_of_mut!(perfect6502_sys::memory) }
+    }
+
+    pub fn cycles(&mut self) -> u32 {
+        unsafe { perfect6502_sys::cycle }
     }
 }
 

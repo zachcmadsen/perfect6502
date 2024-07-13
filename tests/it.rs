@@ -1,14 +1,16 @@
-use perfect6502::State;
+use perfect6502::{Cycle, State};
 
 #[test]
 fn lda_imm() {
     let mut state = State::new().unwrap();
 
-    state.write(0xFFFC, 0x00);
-    state.write(0xFFFD, 0x02);
+    let memory = state.memory_mut();
 
-    state.write(0x0200, 0xA9);
-    state.write(0x0201, 0xEF);
+    memory[0xFFFC] = 0x00;
+    memory[0xFFFD] = 0x02;
+
+    memory[0x0200] = 0xA9;
+    memory[0x0201] = 0xEF;
 
     for _ in 0..9 {
         state.step();
@@ -17,6 +19,9 @@ fn lda_imm() {
 
     state.step();
     state.step();
+    
+    assert!(matches!(state.rw(), Cycle::Read));
+
     state.step();
     state.step();
 
